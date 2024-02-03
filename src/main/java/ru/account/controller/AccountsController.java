@@ -82,10 +82,10 @@ public class AccountsController {
             accountsService.saveAccount(account);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (RestClientException | IllegalArgumentException e) {
-            log.info(e);
+            log.error(e);
             return ResponseEntity.badRequest().body(new ErrorModel(HttpStatus.BAD_REQUEST.value(), e.toString()));
         } catch (Exception e) {
-            log.info(e);
+            log.error(e);
             return ResponseEntity.internalServerError().body(new ErrorModel(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.toString()));
         }
     }
