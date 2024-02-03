@@ -31,7 +31,7 @@ public class AccountsController {
             @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
             @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit,
             @RequestParam(value = "searchText", required = false) String searchText
-            ) {
+    ) {
         if (Objects.nonNull(searchText)) {
             return ResponseEntity.ok().body(accountsService.getAccountsBySearchText(searchText, offset, limit));
         } else {
@@ -70,24 +70,17 @@ public class AccountsController {
         } catch (Exception e) {
             log.info(e);
             return ResponseEntity.internalServerError().body(new ErrorModel(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.toString()));
-        } }
+        }
+    }
 
     @PostMapping("/accounts")
     public ResponseEntity<Object> postAccount(
             @RequestBody Account account
     ) {
-        try {
-            account.checkAccount();
-            account.setId(null);
-            accountsService.saveAccount(account);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (RestClientException | IllegalArgumentException e) {
-            log.error(e);
-            return ResponseEntity.badRequest().body(new ErrorModel(HttpStatus.BAD_REQUEST.value(), e.toString()));
-        } catch (Exception e) {
-            log.error(e);
-            return ResponseEntity.internalServerError().body(new ErrorModel(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.toString()));
-        }
+        account.checkAccount();
+        account.setId(null);
+        accountsService.saveAccount(account);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/accounts/{id}")
@@ -114,7 +107,6 @@ public class AccountsController {
             return ResponseEntity.internalServerError().body(new ErrorModel(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.toString()));
         }
     }
-
 
 
     @DeleteMapping("/accounts/{id}")
